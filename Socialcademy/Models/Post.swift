@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct Post: Identifiable, Codable {
+struct Post: Identifiable, Codable, Equatable {
     //    @DocumentID var id: String?
     var id = UUID()
     var title: String

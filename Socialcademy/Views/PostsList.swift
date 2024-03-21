@@ -9,18 +9,36 @@ import SwiftUI
 
 struct PostsList: View {
     var viewModel = PostsViewModel()
-
+    
     @State var searchText = ""
     @State private var showNewPostForm = false
     
+    
     var body: some View {
         NavigationView {
-            List(viewModel.posts) { post in
-                if(searchText.isEmpty || post.contains(searchText)) {
-                    PostRow(post: post)
+            Group {
+                switch viewModel.posts {
+                case .loading:
+                    ProgressView()
+                case let .error(error):
+                    EmptyListView(
+                        title: "Cannot Load Posts",
+                        message: error.localizedDescription,
+                        retryAction: { viewModel.fetchPosts() }
+                    )
+                case .empty:
+                    EmptyListView(
+                        title: "No Posts",
+                        message: "There aren't any posts yet."
+                    )
+                case let .loaded(posts):
+                    List(posts) { post in
+                        if searchText.isEmpty || post.contains(searchText) {
+                            PostRow(post: post)
+                        }
+                    }
                 }
             }
-            .searchable(text: $searchText)
             .navigationTitle("Posts")
             .toolbar {
                 Button {
@@ -29,14 +47,42 @@ struct PostsList: View {
                     Label("New Post", systemImage: "square.and.pencil")
                 }
             }
+            .sheet(isPresented: $showNewPostForm, content: {
+                NewPostForm(createAction: viewModel.makeCreateAction())
+            })
         }
-        .sheet(isPresented: $showNewPostForm, content: {
-            NewPostForm(createAction: viewModel.makeCreateAction())
-        })
+        .onAppear {
+            viewModel.fetchPosts()
+        }
     }
     
 }
 
-#Preview {
-    PostsList()
+//#Preview {
+//    PostsList()
+//}
+@MainActor
+private struct ListPreview: View {
+    let state: Loadable<[Post]>
+    
+    var body: some View {
+        let postsRepository = PostsRepositoryStub(state: state)
+        let viewModel = PostsViewModel(postsRepository: postsRepository)
+        PostsList(viewModel: viewModel)
+    }
 }
+
+#if DEBUG
+#Preview {
+    ListPreview(state: .loaded([Post.testPost]))
+}
+#Preview {
+    ListPreview(state: .empty)
+}
+#Preview {
+    ListPreview(state: .error)
+}
+#Preview {
+    ListPreview(state: .loading)
+}
+#endif
