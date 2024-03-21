@@ -23,7 +23,7 @@ struct SocialcademyApp: App {
     
     var body: some Scene {
         WindowGroup {
-            PostsList()
+            MainTabView()
         }
     }
 }

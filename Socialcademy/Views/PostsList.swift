@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct PostsList: View {
-    var viewModel = PostsViewModel()
+//    var viewModel = PostsViewModel()
+    @StateObject var viewModel = PostsViewModel()
     
     @State var searchText = ""
     @State private var showNewPostForm = false
@@ -34,17 +35,14 @@ struct PostsList: View {
                 case let .loaded(posts):
                     List(posts) { post in
                         if searchText.isEmpty || post.contains(searchText) {
-                            PostRow(
-                                post: post,
-                                deleteAction: viewModel.makeDeleteAction(for: post)
-                            )
+                            PostRow(viewModel: viewModel.makePostRowViewModel(for: post))
                         }
                     }
                     .animation(.default, value: posts)
                     .searchable(text: $searchText)
                 }
             }
-            .navigationTitle("Posts")
+            .navigationTitle(viewModel.title)
             .toolbar {
                 Button {
                     showNewPostForm = true
@@ -62,10 +60,6 @@ struct PostsList: View {
     }
     
 }
-
-//#Preview {
-//    PostsList()
-//}
 @MainActor
 private struct ListPreview: View {
     let state: Loadable<[Post]>
