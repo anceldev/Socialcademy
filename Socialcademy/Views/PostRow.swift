@@ -10,7 +10,7 @@ import SwiftUI
 struct PostRow: View {
     let post: Post
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text(post.authorName)
                     .font(.subheadline)

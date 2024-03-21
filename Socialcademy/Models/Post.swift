@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
-struct Post: Identifiable {
+struct Post: Identifiable, Codable {
+    //    @DocumentID var id: String?
     var id = UUID()
     var title: String
     var content: String
