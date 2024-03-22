@@ -87,21 +87,7 @@ struct PostsRepositoryStub: PostsRepositoryProtocol {
 #endif
 
 
-private extension DocumentReference {
-    func setData<T: Encodable>(from value: T) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
-            // Method only throws if there’s an encoding error, which indicates a problem with our model.
-            // We handled this with a force try, while all other errors are passed to the completion handler.
-            try! setData(from: value) { error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                    return
-                }
-                continuation.resume()
-            }
-        }
-    }
-}
+
 extension PostsRepositoryProtocol {
     func canDelete(_ post: Post) -> Bool {
         post.author.id == user.id
@@ -150,11 +136,4 @@ private extension Post {
     }
 }
 
-private extension Query {
-    func getDocuments<T: Decodable>(as type: T.Type) async throws -> [T] {
-        let snapshot = try await getDocuments()
-        return snapshot.documents.compactMap { doc in
-            try! doc.data(as: type)
-        }
-    }
-}
+

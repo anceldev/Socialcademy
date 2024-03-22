@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PostRow: View {
-    //    @State var viewModel: PostRowViewModel
+    @EnvironmentObject private var factory: ViewModelFactory
     @ObservedObject var viewModel: PostRowViewModel
     @State private var showConfirmationDialog = false
     
@@ -29,6 +29,12 @@ struct PostRow: View {
                 FavoriteButton(isFavorite: viewModel.isFavorite, action: {
                     viewModel.favoritePost()
                 })
+                NavigationLink {
+                    CommentsList(viewModel: factory.makeCommentsViewModel(for: viewModel.post))
+                } label: {
+                    Label("Comments", systemImage: "text.bubble")
+                        .foregroundStyle(.gray)
+                }
                 Spacer()
                 if viewModel.canDeletePost {
                     Button(role: .destructive, action: {

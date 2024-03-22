@@ -61,6 +61,9 @@ struct PostsList: View {
     }
     
 }
+
+
+#if DEBUG
 @MainActor
 private struct ListPreview: View {
     let state: Loadable<[Post]>
@@ -74,7 +77,6 @@ private struct ListPreview: View {
     }
 }
 
-#if DEBUG
 #Preview {
     ListPreview(state: .loaded([Post.testPost]))
 }

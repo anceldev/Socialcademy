@@ -1,0 +1,35 @@
+//
+//  CommentRowViewModel.swift
+//  Socialcademy
+//
+//  Created by Ancel Dev account on 22/3/24.
+//
+
+import Foundation
+
+@MainActor
+@dynamicMemberLookup
+class CommentRowViewModel: ObservableObject, ErrorHandler {
+    typealias Action = () async throws -> Void
+    private let deleteAction: Action?
+    var canDeleteComment: Bool { deleteAction != nil }
+    
+    @Published var comment: Comment
+    @Published var error: Error?
+    
+    subscript<T>(dynamicMember keyPath: KeyPath<Comment, T>) -> T {
+        comment[keyPath: keyPath]
+    }
+    
+    init(comment: Comment, deleteAction: Action?) {
+        self.comment = comment
+        self.deleteAction = deleteAction
+    }
+    
+    func deleteComment() {
+        guard let deleteAction = deleteAction else {
+            preconditionFailure("Cannot delete comment: no delete action providede")
+        }
+        withErrorHandlingTask(perform: deleteAction)
+    }
+}
