@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct Post: Identifiable, Codable, Equatable {
+struct Post: Identifiable, Equatable {
     //    @DocumentID var id: String?
     var id = UUID()
     var title: String
@@ -30,4 +30,9 @@ extension Post {
         title: "Lorem ipsum",
         content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         author: User.testUser)
+}
+extension Post: Codable {
+    enum CodingKeys: CodingKey {
+        case title, content, author, timestamp, id
+    }
 }
