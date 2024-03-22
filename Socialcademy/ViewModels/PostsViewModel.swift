@@ -16,46 +16,52 @@ class PostsViewModel: ObservableObject {
     private let postsRepository: PostsRepositoryProtocol
     
     enum Filter {
-        case all, favorites
+        case all, author(User), favorites
     }
     var title: String {
         switch filter {
         case .all:
             return "Posts"
+        case let .author(author):
+            return "\(author.name)'s Posts"
         case .favorites:
             return "Favorites"
         }
     }
     
-    init(filter: Filter = .all, postsRepository: PostsRepositoryProtocol = PostsRepository()) {
+    init(filter: Filter = .all, postsRepository: PostsRepositoryProtocol) {
         self.filter = filter
         self.postsRepository = postsRepository
     }
     
-    func makeCreateAction() -> NewPostForm.CreateAction {
-        return { [weak self] post in
+    
+    func makeNewPostViewModel() -> FormViewModel<Post> {
+        
+        return FormViewModel(initialValue: Post(title: "", content: "", author: postsRepository.user)) { [weak self] post in
+            print(post.author.name)
+            print(post.author.id)
+            print(post.title)
             try await self?.postsRepository.create(post)
-            self?.posts.value?.insert(post, at: 0)
+            self?.posts.value?.insert(post , at: 0)
         }
     }
-     @MainActor
+    
+    @MainActor
     func makePostRowViewModel(for post: Post) -> PostRowViewModel {
+        let deleteAction = { [weak self] in
+            try await self?.postsRepository.delete(post)
+            self?.posts.value?.removeAll { $0 == post }
+        }
+        let favoriteAction = { [weak self] in
+            let newValue = !post.isFavorite
+            try await newValue ? self?.postsRepository.favorite(post) : self?.postsRepository.unfavorite(post)
+            guard let i = self?.posts.value?.firstIndex(of: post) else { return }
+            self?.posts.value?[i].isFavorite = newValue
+        }
         return PostRowViewModel(
             post: post,
-            deleteAction: {
-                [weak self] in
-                try await self?.postsRepository.delete(post)
-                self?.posts.value?.removeAll { $0.id == post.id }
-            },
-            favoriteAction: {
-                [weak self] in
-                let newValue = !post.isFavorite
-                try await newValue ? self?.postsRepository.favorite(post) : self?.postsRepository.unfavorite(post)
-                guard let i = self?.posts.value?.firstIndex(of: post) else { return }
-                self?.posts.value?[i].isFavorite = newValue
-                
-                print(self?.posts.value?[i].isFavorite ?? "No cambia")
-            })
+            deleteAction: postsRepository.canDelete(post) ? deleteAction : nil,
+            favoriteAction: favoriteAction)
     }
     
     func fetchPosts() {
@@ -66,17 +72,6 @@ class PostsViewModel: ObservableObject {
                 print("[PostsViewModel] Cannot fetch posts: \(error)")
                 posts = .error(error)
             }
-        }
-    }
-}
-
-private extension PostsRepositoryProtocol {
-    func fetchPosts(matching filter: PostsViewModel.Filter) async throws -> [Post] {
-        switch filter {
-        case .all:
-            return try await fetchAllPosts()
-        case .favorites:
-            return try await fetchFavoritePosts()
         }
     }
 }

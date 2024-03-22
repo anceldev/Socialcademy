@@ -13,6 +13,8 @@
 		B40E2E052BACA2FD00134866 /* PostRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40E2E042BACA2FD00134866 /* PostRowViewModel.swift */; };
 		B40E2E072BACAFBF00134866 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40E2E062BACAFBF00134866 /* MainTabView.swift */; };
 		B44662152BADDBD900CE4533 /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44662142BADDBD900CE4533 /* PrimaryButtonStyle.swift */; };
+		B44662172BADE1E400CE4533 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44662162BADE1E400CE4533 /* User.swift */; };
+		B44662192BADE69D00CE4533 /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44662182BADE69D00CE4533 /* ViewModelFactory.swift */; };
 		B479E5E82BABB09300F4567D /* SocialcademyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B479E5E72BABB09300F4567D /* SocialcademyApp.swift */; };
 		B479E5EA2BABB09300F4567D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B479E5E92BABB09300F4567D /* ContentView.swift */; };
 		B479E5EC2BABB09400F4567D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B479E5EB2BABB09400F4567D /* Assets.xcassets */; };
@@ -45,6 +47,8 @@
 		B40E2E042BACA2FD00134866 /* PostRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRowViewModel.swift; sourceTree = "<group>"; };
 		B40E2E062BACAFBF00134866 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		B44662142BADDBD900CE4533 /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
+		B44662162BADE1E400CE4533 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		B44662182BADE69D00CE4533 /* ViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelFactory.swift; sourceTree = "<group>"; };
 		B479E5E42BABB09300F4567D /* Socialcademy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Socialcademy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B479E5E72BABB09300F4567D /* SocialcademyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialcademyApp.swift; sourceTree = "<group>"; };
 		B479E5E92BABB09300F4567D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -168,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				B479E60B2BABB28D00F4567D /* Post.swift */,
+				B44662162BADE1E400CE4533 /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -179,6 +184,7 @@
 				B40E2E042BACA2FD00134866 /* PostRowViewModel.swift */,
 				B4C5FFEA2BAD843400AD3416 /* AuthViewModel.swift */,
 				B4C5FFF02BAD879900AD3416 /* FormViewModel.swift */,
+				B44662182BADE69D00CE4533 /* ViewModelFactory.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -289,6 +295,7 @@
 				B479E5EA2BABB09300F4567D /* ContentView.swift in Sources */,
 				B479E6102BABB3DE00F4567D /* PostRow.swift in Sources */,
 				B4C5FFF12BAD879900AD3416 /* FormViewModel.swift in Sources */,
+				B44662192BADE69D00CE4533 /* ViewModelFactory.swift in Sources */,
 				B40E2E012BAC4D7900134866 /* EmptyListView.swift in Sources */,
 				B479E5E82BABB09300F4567D /* SocialcademyApp.swift in Sources */,
 				B479E6122BABB99C00F4567D /* NewPostForm.swift in Sources */,
@@ -302,6 +309,7 @@
 				B4C5FFED2BAD84EF00AD3416 /* AuthView.swift in Sources */,
 				B479E6152BABBC8100F4567D /* PostsViewModel.swift in Sources */,
 				B40E2DFE2BAC458400134866 /* Loadable.swift in Sources */,
+				B44662172BADE1E400CE4533 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

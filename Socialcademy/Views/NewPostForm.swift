@@ -11,26 +11,21 @@ import OSLog
 
 
 struct NewPostForm: View {
-    typealias CreateAction = (Post) async throws -> Void
-    let createAction: CreateAction
-
-    @State private var post = Post(title: "", content: "", authorName: "")
+    @StateObject var viewModel: FormViewModel<Post>
     @Environment(\.dismiss) private var dismiss
-    @State private var state = FormState.idle
-
+    
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Title", text: $post.title)
-                    TextField("Autho name", text: $post.authorName)
+                    TextField("Title", text: $viewModel.title)
                 }
                 Section("Content") {
-                    TextEditor(text: $post.content)
+                    TextEditor(text: $viewModel.content)
                         .multilineTextAlignment(.leading)
                 }
-                Button(action: createPost, label: {
-                    if state == .working {
+                Button(action: viewModel.submit, label: {
+                    if viewModel.isWorking {
                         ProgressView()
                     } else {
                         Text("Create Post")
@@ -42,45 +37,19 @@ struct NewPostForm: View {
                 .padding()
                 .listRowBackground(Color.accentColor)
             }
-            .onSubmit(createPost)
+            .onSubmit(viewModel.submit)
             .navigationTitle("New Post")
         }
-        .disabled(state == .working)
-        .alert("Cannot Create Post", isPresented: $state.isError, actions: {}) {
-            Text("Sorry, something went wrong.")
+        .disabled(viewModel.isWorking)
+        .alert("Cannot Create Post", error: $viewModel.error)
+        .onChange(of: viewModel.isWorking) { _ , newValue in
+            guard !newValue, viewModel.error == nil else { return }
+            dismiss()
         }
-    }
-    private func createPost() {
-        Task {
-            state = .working
-            do {
-                try await createAction(post)
-                dismiss()
-            }
-            catch {
-                print("[NewPostForm] Cannot create post: \(error)")
-                state = .error
-            }
-        }
+        
     }
 }
 
 #Preview {
-    NewPostForm(createAction: { _ in })
-}
-
-private extension NewPostForm {
-    enum FormState {
-        case idle, working, error
-        
-        var isError: Bool {
-            get {
-                self == .error
-            }
-            set {
-                guard !newValue else { return }
-                self = .idle
-            }
-        }
-    }
+    NewPostForm(viewModel: FormViewModel(initialValue: Post.testPost, action: { _ in }))
 }

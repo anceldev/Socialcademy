@@ -10,16 +10,19 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 protocol PostsRepositoryProtocol {
+    var user: User { get }
     func fetchAllPosts() async throws -> [Post]
     func create(_ post: Post) async throws
     func delete(_ post: Post) async throws
     func favorite(_ post: Post) async throws
     func unfavorite(_ post: Post) async throws
     func fetchFavoritePosts() async throws -> [Post]
+    func fetchPosts(by author: User) async throws -> [Post]
 }
 
 struct PostsRepository: PostsRepositoryProtocol {
-    let postsReference = Firestore.firestore().collection("posts_v1")
+    let postsReference = Firestore.firestore().collection("posts_v2")
+    let user: User
     
     func create(_ post: Post) async throws {
         let document = postsReference.document(post.id.uuidString)
@@ -34,6 +37,7 @@ struct PostsRepository: PostsRepositoryProtocol {
     }
     
     func delete(_ post: Post) async throws {
+        precondition(canDelete(post))
         let document = postsReference.document(post.id.uuidString)
         try await document.delete()
     }
@@ -56,9 +60,13 @@ struct PostsRepository: PostsRepositoryProtocol {
             try! doc.data(as: Post.self)
         }
     }
+    func fetchPosts(by author: User) async throws -> [Post] {
+        return try await fetchPosts(from: postsReference.whereField("author.id", isEqualTo: author.id))
+    }
 }
 #if DEBUG
 struct PostsRepositoryStub: PostsRepositoryProtocol {
+    var user = User.testUser
     let state: Loadable<[Post]>
     func fetchAllPosts() async throws -> [Post] {
         return try await state.simulate()
@@ -69,6 +77,9 @@ struct PostsRepositoryStub: PostsRepositoryProtocol {
     func favorite(_ post: Post) async throws {}
     func unfavorite(_ post: Post) async throws {}
     func fetchFavoritePosts() async throws -> [Post] {
+        return try await state.simulate()
+    }
+    func fetchPosts(by author: User) async throws -> [Post] {
         return try await state.simulate()
     }
 }
@@ -87,6 +98,22 @@ private extension DocumentReference {
                 }
                 continuation.resume()
             }
+        }
+    }
+}
+extension PostsRepositoryProtocol {
+    func canDelete(_ post: Post) -> Bool {
+        post.author.id == user.id
+    }
+    
+    func fetchPosts(matching filter: PostsViewModel.Filter) async throws -> [Post] {
+        switch filter {
+        case .all:
+            return try await fetchAllPosts()
+        case let .author(author):
+            return try await fetchPosts(by: author)
+        case .favorites:
+            return try await fetchFavoritePosts()
         }
     }
 }
