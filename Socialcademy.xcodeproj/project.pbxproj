@@ -40,6 +40,8 @@
 		B479E6122BABB99C00F4567D /* NewPostForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B479E6112BABB99C00F4567D /* NewPostForm.swift */; };
 		B479E6152BABBC8100F4567D /* PostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B479E6142BABBC8100F4567D /* PostsViewModel.swift */; };
 		B479E6182BABBF2900F4567D /* PostsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B479E6172BABBF2900F4567D /* PostsRepository.swift */; };
+		B47B773F2BAF90E900319889 /* StorageFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47B773E2BAF90E900319889 /* StorageFile.swift */; };
+		B47B77412BAF921F00319889 /* ImagePickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47B77402BAF921F00319889 /* ImagePickerButton.swift */; };
 		B4C5FFE92BAD816400AD3416 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C5FFE82BAD816400AD3416 /* AuthService.swift */; };
 		B4C5FFEB2BAD843400AD3416 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C5FFEA2BAD843400AD3416 /* AuthViewModel.swift */; };
 		B4C5FFED2BAD84EF00AD3416 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C5FFEC2BAD84EF00AD3416 /* AuthView.swift */; };
@@ -76,6 +78,8 @@
 		B479E6112BABB99C00F4567D /* NewPostForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostForm.swift; sourceTree = "<group>"; };
 		B479E6142BABBC8100F4567D /* PostsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewModel.swift; sourceTree = "<group>"; };
 		B479E6172BABBF2900F4567D /* PostsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsRepository.swift; sourceTree = "<group>"; };
+		B47B773E2BAF90E900319889 /* StorageFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageFile.swift; sourceTree = "<group>"; };
+		B47B77402BAF921F00319889 /* ImagePickerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerButton.swift; sourceTree = "<group>"; };
 		B4C5FFE82BAD816400AD3416 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		B4C5FFEA2BAD843400AD3416 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		B4C5FFEC2BAD84EF00AD3416 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
@@ -106,6 +110,7 @@
 				B40E2DFD2BAC458400134866 /* Loadable.swift */,
 				B446621E2BAE2BA100CE4533 /* Firestore+Extensions.swift */,
 				B44662282BAE3C2E00CE4533 /* ErrorHandler.swift */,
+				B47B773E2BAF90E900319889 /* StorageFile.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -116,6 +121,7 @@
 				B40E2E002BAC4D7900134866 /* EmptyListView.swift */,
 				B40E2E022BAC5FBA00134866 /* Alert+Error.swift */,
 				B44662142BADDBD900CE4533 /* PrimaryButtonStyle.swift */,
+				B47B77402BAF921F00319889 /* ImagePickerButton.swift */,
 			);
 			path = SupportingViews;
 			sourceTree = "<group>";
@@ -314,6 +320,7 @@
 				B40E2E032BAC5FBA00134866 /* Alert+Error.swift in Sources */,
 				B446621F2BAE2BA100CE4533 /* Firestore+Extensions.swift in Sources */,
 				B479E6182BABBF2900F4567D /* PostsRepository.swift in Sources */,
+				B47B773F2BAF90E900319889 /* StorageFile.swift in Sources */,
 				B479E5EA2BABB09300F4567D /* ContentView.swift in Sources */,
 				B479E6102BABB3DE00F4567D /* PostRow.swift in Sources */,
 				B4C5FFF12BAD879900AD3416 /* FormViewModel.swift in Sources */,
@@ -331,6 +338,7 @@
 				B44662292BAE3C2E00CE4533 /* ErrorHandler.swift in Sources */,
 				B40E2E072BACAFBF00134866 /* MainTabView.swift in Sources */,
 				B4C5FFEB2BAD843400AD3416 /* AuthViewModel.swift in Sources */,
+				B47B77412BAF921F00319889 /* ImagePickerButton.swift in Sources */,
 				B4C5FFE92BAD816400AD3416 /* AuthService.swift in Sources */,
 				B44662212BAE2D6700CE4533 /* CommentsViewModel.swift in Sources */,
 				B4C5FFED2BAD84EF00AD3416 /* AuthView.swift in Sources */,
@@ -474,6 +482,7 @@
 				DEVELOPMENT_TEAM = 5VZ6Q8DGLP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This lets you add photos to your profile and posts.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -503,6 +512,7 @@
 				DEVELOPMENT_TEAM = 5VZ6Q8DGLP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This lets you add photos to your profile and posts.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

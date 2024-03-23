@@ -21,13 +21,27 @@ protocol PostsRepositoryProtocol {
 }
 
 struct PostsRepository: PostsRepositoryProtocol {
-    let postsReference = Firestore.firestore().collection("posts_v2")
+    let postsReference = Firestore.firestore().collection("posts_v3")
     let favoritesReference = Firestore.firestore().collection("favorites")
     let user: User
     
     func create(_ post: Post) async throws {
+        var post = post
+        if let imageFileURL = post.imageURL {
+            post.imageURL = try await StorageFile
+                .with(namespace: "posts", identifier: post.id.uuidString)
+                .putFile(from: imageFileURL)
+                .getDownloadURL()
+        }
         let document = postsReference.document(post.id.uuidString)
         try await document.setData(from: post)
+    }
+    func delete(_ post: Post) async throws {
+        precondition(canDelete(post))
+        let document = postsReference.document(post.id.uuidString)
+        try await document.delete()
+        let image = post.imageURL.map(StorageFile.atURL(_:))
+        try await image?.delete()
     }
     
     func fetchAllPosts() async throws -> [Post] {
@@ -45,11 +59,6 @@ struct PostsRepository: PostsRepositoryProtocol {
             }
     }
     
-    func delete(_ post: Post) async throws {
-        precondition(canDelete(post))
-        let document = postsReference.document(post.id.uuidString)
-        try await document.delete()
-    }
     
     func favorite(_ post: Post) async throws {
         let favorite = Favorite(postID: post.id, userID: user.id)
