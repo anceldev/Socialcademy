@@ -74,5 +74,5 @@ private extension NewPostForm {
 }
 
 #Preview {
-    NewPostForm(viewModel: FormViewModel(initialValue: Post.testPost, action: { _ in }))
+    NewPostForm(viewModel: FormViewModel<Post>(initialValue: Post.testPost, action: { _ in }))
 }

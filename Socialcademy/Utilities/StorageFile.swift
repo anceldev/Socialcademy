@@ -2,18 +2,19 @@
 //  StorageFile.swift
 //  Socialcademy
 //
-//  Created by Ancel Dev account on 23/3/24.
+//  Created by John Royal on 1/9/22.
 //
 
 import Foundation
 import FirebaseStorage
+import FirebaseSharedSwift
 
 struct StorageFile {
     private let storageReference: StorageReference
     
     func putFile(from fileURL: URL) async throws -> Self {
         _ = try await storageReference.putFileAsync(from: fileURL)
-        return self
+        return self // for method chaining
     }
     
     func getDownloadURL() async throws -> URL {
@@ -39,3 +40,4 @@ extension StorageFile {
         return StorageFile(storageReference: storageReference)
     }
 }
+

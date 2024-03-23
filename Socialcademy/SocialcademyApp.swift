@@ -9,6 +9,7 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseStorage
 import FirebaseCore
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -22,6 +23,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         settings.host = "127.0.0.1:8080"
         settings.isSSLEnabled = false
         Firestore.firestore().settings = settings
+        
+        Storage.storage().useEmulator(withHost: "127.0.0.1", port: 9199)
         return true
     }
 }
