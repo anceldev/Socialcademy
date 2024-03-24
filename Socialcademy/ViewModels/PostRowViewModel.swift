@@ -11,7 +11,7 @@ import Observation
 //@Observable
 @MainActor
 @dynamicMemberLookup
-class PostRowViewModel: ObservableObject, ErrorHandler {
+class PostRowViewModel: ObservableObject, StateManager {
     typealias Action = () async throws -> Void
     
     @Published var post: Post
@@ -31,10 +31,10 @@ class PostRowViewModel: ObservableObject, ErrorHandler {
         guard let deleteAction = deleteAction else {
             preconditionFailure("Cannot delete post: no delete action provided")
         }
-        withErrorHandlingTask(perform: deleteAction)
+        withStateManagingTask(perform: deleteAction)
     }
     func favoritePost() {
-        withErrorHandlingTask(perform: favoriteAction)
+        withStateManagingTask(perform: favoriteAction)
     }
     
     subscript<T>(dynamicMember keyPath: KeyPath<Post, T>) -> T {
